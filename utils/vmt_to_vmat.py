@@ -67,9 +67,6 @@ debugPauseOnError = False   #
 modPath = ""
 
 # material types need to be lowercase because python is a bit case sensitive
-# TODO: later, we will convert these to be in a dictionary with something like
-# "shaderName": ("HLATargetShader", "SVRHTargetShader", "DOTATargetShader"),
-# We will also have a flag for HLA, SVRH (steamtours), and DOTA)
 # For now though, just pretend everything uses TextureColor and fuck everything else
 vmtSupportedShaders = [
 "vertexlitgeneric",         # + Convert to VR Complex
@@ -279,7 +276,7 @@ print(" + As a reminder, please extract all of your .vtfs to .tga using VTFEdit'
 # Start by asking some basic questions
 yes = {'yes','y', 'ye'}
 no = {'no','n', ''}
-validS2Shaders = {'vr_complex','vr_standard'}
+validS2Shaders = {'complex'}
 convertVTFs = False
 
 targetFolder = input("What folder would you like to convert? Valid Format: C:\\Steam\\steamapps\\Half-Life Alyx\\content\\tf\\materials: ").lower()
@@ -320,9 +317,9 @@ else:
     print("Please respond with 'yes' or 'no.' Quitting process!")
     quit()'''
 
-SHADER = input("What is your target shader? Valid Options: vr_complex (vr_standard support coming soon) - ").lower()
+SHADER = input("What is your target shader? Valid Options: complex (vr_standard support coming soon) - ").lower()
 if SHADER == "":
-    SHADER = "vr_complex"
+    SHADER = "complex"
 elif SHADER not in validS2Shaders:
     print("Please respond with a valid shader! Quitting process!")
     quit()
@@ -332,7 +329,7 @@ fileList = []
 vtfList = []
 
 # HACK; See note under PBR_HACK
-if SHADER.lower() == "vr_complex":
+if SHADER.lower() == "complex":
     PBR_HACK = True
 
 # TODO: make this work so that when parsing directories, skip tools/debug stuff
@@ -479,7 +476,7 @@ for vmtFileName in fileList:
         except:
             print("- ERROR: $ambientoccltexture/$ambientocclusiontexture file " + tgaPath.split(modPath + "materials\\")[1] + " in TGA does not exist. Skipping!")
 
-    if SHADER == "vr_complex":
+    if SHADER == "complex":
         print('+ Creating ' + os.path.basename(vmatFileName))
         with open(vmatFileName, 'w') as vmatFile:
             # VMT Maps are now parsed. Moving onto creating the vmat!
